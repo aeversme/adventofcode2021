@@ -44,7 +44,7 @@ def oxygen(codes):
 def co2(codes):
     """
     Takes a list of binary codes. For each bit (index), keeps only the codes whose value at that index matches the
-    'least common' bit for the remaining list of codes. In case of a tie, the 'least common' bit is '1'. Returns the
+    'least common' bit for the remaining list of codes. In case of a tie, the 'least common' bit is '0'. Returns the
     last remaining code.
     """
     index = 0
