@@ -8,7 +8,7 @@ test_codes = ['00100', '11110', '10110', '10111', '10101', '01111', '00111', '11
 
 def bit_value_count(codes, index):
     """
-    Returns the number of zeros and ones at a given index for all elements of a provided list of binary strings.
+    Takes a list of binary codes and an index. Returns the number of zeros and ones at the given index across all codes.
     """
     num_zeros = 0
     num_ones = 0
