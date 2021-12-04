@@ -36,7 +36,7 @@ def oxygen(codes):
             most_common = '0'
         else:
             most_common = '1'
-        codes = [code for i, code in enumerate(codes) if code[index] == most_common]
+        codes = [code for code in codes if code[index] == most_common]
         index += 1
     return codes[0]
 
@@ -54,7 +54,7 @@ def co2(codes):
             least_common = '1'
         else:
             least_common = '0'
-        codes = [code for i, code in enumerate(codes) if code[index] == least_common]
+        codes = [code for code in codes if code[index] == least_common]
         index += 1
     return codes[0]
 
