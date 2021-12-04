@@ -1,4 +1,4 @@
-with open('bingo.txt') as b:
+with open('test_bingo.txt') as b:
     bingo = b.readlines()
 
 
@@ -29,6 +29,15 @@ def squid_bingo():
     cards = make_bingo_cards(card_strings)
     print(draw)
     print(cards[0])
+
+    # while ! winner
+    # get next draw number
+    # loop through every card to look for draw number
+    # if number found on card, replace with -1
+    # increment a # of draws counter
+    # if number of draws >= 5, check for winner
+    # if winner, do calculation
+    # else continue
 
 
 squid_bingo()
