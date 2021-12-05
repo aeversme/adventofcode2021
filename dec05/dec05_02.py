@@ -24,13 +24,13 @@ def find_max_value(vent_list):
     return max_value
 
 
-# for diagonal lines, condition is:
-# abs(coord_list[2] - coord_list[0]) == abs(coord_list[3] -coord_list[1])
+# TODO: for diagonal lines, condition is:
+# TODO: abs(coord_list[2] - coord_list[0]) == abs(coord_list[3] -coord_list[1])
 def is_line(coord_list):
     return coord_list[0] == coord_list[2] or coord_list[1] == coord_list[3]
 
 
-# define a way to plot diagonal lines
+# TODO: define a way to plot diagonal lines
 def plot_line(coord_list, plot):
     # vertical line
     if coord_list[0] == coord_list[2]:
@@ -57,7 +57,7 @@ def count_overlaps(plot):
     return overlap_count
 
 
-# include logic to plot diagonal lines
+# TODO: include logic to plot diagonal lines
 def analyze_vents():
     vents_list = convert_input(vents)
     max_value = find_max_value(vents_list)
