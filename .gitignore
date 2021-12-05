@@ -1,2 +1,7 @@
 /venv
 .idea/
+/dec*/test
+/dec*/test/*
+/dec*/__pycache__/
+/dec*/__pycache__/*
+.pytest*
