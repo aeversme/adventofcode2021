@@ -25,6 +25,7 @@ def find_max_value(vent_list):
 
 
 # this is only for horiz or vert lines
+# create method for detecting diagonal lines
 def is_line(coord_list):
     return coord_list[0] == coord_list[2] or coord_list[1] == coord_list[3]
 
@@ -32,6 +33,8 @@ def is_line(coord_list):
 # define a way to plot diagonal lines
 # ex: '1,1 -> 3,3'
 # plots '1,1' '2,2' and '3,3'
+# ex: '9,7 -> 7,9'
+# plots '9,7' '8,8' and '7,9'
 def plot_line(coord_list, plot):
     if coord_list[0] == coord_list[2]:
         column = coord_list[0]
