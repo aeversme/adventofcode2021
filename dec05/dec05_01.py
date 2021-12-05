@@ -18,9 +18,9 @@ def convert_input(vent_data):
 def find_max_value(vent_list):
     max_value = 0
     for row in vent_list:
-        for element in row:
-            if element > max_value:
-                max_value = element
+        highest_row_value = max(row)
+        if highest_row_value > max_value:
+            max_value = highest_row_value
     return max_value
 
 
@@ -33,23 +33,17 @@ def plot_line(coord_list, plot):
         column = coord_list[0]
         y1 = coord_list[1]
         y2 = coord_list[3]
-        mod = 1
-        step = 1
-        if y1 > y2:
-            mod = -1
-            step = -1
-        for row in range(y1, y2 + mod, step):
+        range_low = min(y1, y2)
+        range_high = max(y1, y2) + 1
+        for row in range(range_low, range_high):
             plot[row][column] += 1
     if coord_list[1] == coord_list[3]:
         row = coord_list[1]
         x1 = coord_list[0]
         x2 = coord_list[2]
-        mod = 1
-        step = 1
-        if x1 > x2:
-            mod = -1
-            step = -1
-        for column in range(x1, x2 + mod, step):
+        range_low = min(x1, x2)
+        range_high = max(x1, x2) + 1
+        for column in range(range_low, range_high):
             plot[row][column] += 1
     return
 
