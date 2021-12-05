@@ -34,16 +34,16 @@ def plot_line(coord_list, plot):
         y1 = coord_list[1]
         y2 = coord_list[3]
         range_low = min(y1, y2)
-        range_high = max(y1, y2) + 1
-        for row in range(range_low, range_high):
+        range_high = max(y1, y2)
+        for row in range(range_low, range_high + 1):
             plot[row][column] += 1
     if coord_list[1] == coord_list[3]:
         row = coord_list[1]
         x1 = coord_list[0]
         x2 = coord_list[2]
         range_low = min(x1, x2)
-        range_high = max(x1, x2) + 1
-        for column in range(range_low, range_high):
+        range_high = max(x1, x2)
+        for column in range(range_low, range_high + 1):
             plot[row][column] += 1
     return
 
@@ -60,8 +60,8 @@ def count_overlaps(plot):
 def analyze_vents():
     vents_list = convert_input(vents)
     max_value = find_max_value(vents_list)
-    print(vents_list)
-    print(max_value)
+    # print(vents_list)
+    # print(max_value)
     plot = [[0] * (max_value + 1) for _ in range(max_value + 1)]
     for vent in vents_list:
         if is_line(vent):
