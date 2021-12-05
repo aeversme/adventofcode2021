@@ -29,23 +29,20 @@ def is_line(coord_list):
 
 
 def plot_line(coord_list, plot):
+    # vertical line
     if coord_list[0] == coord_list[2]:
-        column = coord_list[0]
-        y1 = coord_list[1]
-        y2 = coord_list[3]
-        range_low = min(y1, y2)
-        range_high = max(y1, y2)
-        for row in range(range_low, range_high + 1):
-            plot[row][column] += 1
+        x_start = coord_list[0]
+        y_start = min(coord_list[1], coord_list[3])
+        for _ in range(abs(coord_list[1] - coord_list[3]) + 1):
+            plot[y_start][x_start] += 1
+            y_start += 1
+    # horizontal line
     if coord_list[1] == coord_list[3]:
-        row = coord_list[1]
-        x1 = coord_list[0]
-        x2 = coord_list[2]
-        range_low = min(x1, x2)
-        range_high = max(x1, x2)
-        for column in range(range_low, range_high + 1):
-            plot[row][column] += 1
-    return
+        x_start = min(coord_list[0], coord_list[2])
+        y_start = coord_list[1]
+        for _ in range(abs(coord_list[0] - coord_list[2]) + 1):
+            plot[y_start][x_start] += 1
+            x_start += 1
 
 
 def count_overlaps(plot):
@@ -67,7 +64,7 @@ def analyze_vents():
         if is_line(vent):
             plot_line(vent, plot)
     # print(plot)
-    print(count_overlaps(plot))
+    print(f"Number of vent overlaps: {count_overlaps(plot)}")
     return 0
 
 

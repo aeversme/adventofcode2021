@@ -31,28 +31,21 @@ def is_line(coord_list):
 
 
 # define a way to plot diagonal lines
-# ex: '1,1 -> 3,3'
-# plots '1,1' '2,2' and '3,3'
-# ex: '9,7 -> 7,9'
-# plots '9,7' '8,8' and '7,9'
 def plot_line(coord_list, plot):
+    # vertical line
     if coord_list[0] == coord_list[2]:
-        column = coord_list[0]
-        y1 = coord_list[1]
-        y2 = coord_list[3]
-        y_low = min(y1, y2)
-        y_high = max(y1, y2)
-        for row in range(y_low, y_high + 1):
-            plot[row][column] += 1
+        x_start = coord_list[0]
+        y_start = min(coord_list[1], coord_list[3])
+        for _ in range(abs(coord_list[1] - coord_list[3]) + 1):
+            plot[y_start][x_start] += 1
+            y_start += 1
+    # horizontal line
     if coord_list[1] == coord_list[3]:
-        row = coord_list[1]
-        x1 = coord_list[0]
-        x2 = coord_list[2]
-        x_low = min(x1, x2)
-        x_high = max(x1, x2)
-        for column in range(x_low, x_high + 1):
-            plot[row][column] += 1
-    return
+        x_start = min(coord_list[0], coord_list[2])
+        y_start = coord_list[1]
+        for _ in range(abs(coord_list[0] - coord_list[2]) + 1):
+            plot[y_start][x_start] += 1
+            x_start += 1
 
 
 def count_overlaps(plot):
@@ -75,7 +68,7 @@ def analyze_vents():
         if is_line(vent):
             plot_line(vent, plot)
     # print(plot)
-    print(count_overlaps(plot))
+    print(f"Number of vent overlaps: {count_overlaps(plot)}")
     return 0
 
 
