@@ -81,9 +81,8 @@ def squid_bingo():
                     for card in cards:
                         if card == winning_card:
                             cards.remove(card)
-                print("A card won and has been removed from the game.")
-                print(f"Cards remaining: {len(cards)}")
-            if result != [] and len(cards) == 1:
+                print(f"Card(s) removed from the game. Cards remaining: {len(cards)}")
+            elif result != [] and len(cards) == 1:
                 winner = True
                 print("Game over, there's one card remaining and it won!")
                 print(f"Winning number: {draw_number}")
