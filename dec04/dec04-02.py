@@ -1,8 +1,14 @@
+# Advent of Code 2021
+# December 04, part 1
+
 with open('bingo.txt') as b:
     bingo = b.readlines()
 
 
 def convert_bingo_input():
+    """
+    Transforms input text. Returns an array of draw numbers and an array of string arrays.
+    """
     bingo_strip = [i.strip('\n') for i in bingo]
     draw = bingo_strip.pop(0).split(',')
     draw = [int(i) for i in draw]
@@ -12,6 +18,10 @@ def convert_bingo_input():
 
 
 def make_bingo_cards(bingo_input):
+    """
+    Takes an array of string arrays. Returns an array of bingo cards. Each card is an array of five integer arrays,
+    each containing 5 integers.
+    """
     card_list = []
     index = 0
     for i in range(int(len(bingo_input) // 5)):
@@ -25,6 +35,10 @@ def make_bingo_cards(bingo_input):
 
 
 def look_for_number(draw, cards):
+    """
+    Takes a draw number and an array of cards. Loops through every element of every card and replaces any instance of
+    the draw number with -1.
+    """
     for card in range(len(cards)):
         for row in range(len(cards[0])):
             for element in range(len(cards[0][0])):
@@ -33,6 +47,10 @@ def look_for_number(draw, cards):
 
 
 def look_for_bingo(cards):
+    """
+    Takes an array of cards. Loops through each card. If all elements of one row or one column are -1, adds that card
+    to an array of winning cards. Returns the winning cards array once all winners have been found.
+    """
     winning_cards = []
     for card in range(len(cards)):
         for row in range(5):
@@ -53,6 +71,9 @@ def look_for_bingo(cards):
 
 
 def score_winning_card(card, winning_number):
+    """
+    Takes a card and a winning number. Returns the score of the card.
+    """
     unmarked_sum = 0
     for row in range(5):
         for element in range(5):
