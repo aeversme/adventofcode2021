@@ -20,26 +20,29 @@ def plot_line(line_type, coord_list, plot):
     if line_type == "vertical":
         x_start = coord_list[0]
         y_start = min(coord_list[1], coord_list[3])
-        for _ in range(abs(coord_list[1] - coord_list[3]) + 1):
-            plot[y_start][x_start] += 1
-            y_start += 1
+        range_value = abs(coord_list[1] - coord_list[3])
+        x_increment = 0
+        y_increment = 1
     elif line_type == "horizontal":
         x_start = min(coord_list[0], coord_list[2])
         y_start = coord_list[1]
-        for _ in range(abs(coord_list[0] - coord_list[2]) + 1):
-            plot[y_start][x_start] += 1
-            x_start += 1
+        range_value = abs(coord_list[0] - coord_list[2])
+        x_increment = 1
+        y_increment = 0
     elif line_type == "negative_diag":
         x_start = min(coord_list[0], coord_list[2])
         y_start = max(coord_list[1], coord_list[3])
-        for _ in range(abs(coord_list[0] - coord_list[2]) + 1):
-            plot[y_start][x_start] += 1
-            x_start += 1
-            y_start -= 1
+        range_value = abs(coord_list[0] - coord_list[2])
+        x_increment = 1
+        y_increment = -1
     else:
         x_start = min(coord_list[0], coord_list[2])
         y_start = min(coord_list[1], coord_list[3])
-        for _ in range(abs(coord_list[0] - coord_list[2]) + 1):
-            plot[y_start][x_start] += 1
-            x_start += 1
-            y_start += 1
+        range_value = abs(coord_list[0] - coord_list[2])
+        x_increment = 1
+        y_increment = 1
+
+    for _ in range(range_value + 1):
+        plot[y_start][x_start] += 1
+        x_start += x_increment
+        y_start += y_increment
