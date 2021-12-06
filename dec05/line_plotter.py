@@ -1,4 +1,7 @@
 def check_line_type(coord_list):
+    """
+    Takes a list of integer coordinate values: [x1, y1, x2, y2]. Returns a string declaring the line type, if any.
+    """
     x1 = coord_list[0]
     x2 = coord_list[2]
     y1 = coord_list[1]
@@ -17,6 +20,11 @@ def check_line_type(coord_list):
 
 
 def plot_line(line_type, coord_list, plot):
+    """
+    Takes a line type string, a list of integer coordinate values, and a 2-dimensional 'plot' list of zeros. Sets
+    parameters based on the line type and coordinates, and increments each coordinate along the line's path in the
+    2-dimensional 'plot' list by 1.
+    """
     if line_type == "vertical":
         x_start = coord_list[0]
         y_start = min(coord_list[1], coord_list[3])
