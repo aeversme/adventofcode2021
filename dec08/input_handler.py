@@ -17,11 +17,13 @@ def convert_for_part_two(data):
 
 def split_and_sort(string_list):
     """
-    Takes a list of strings. For each string, splits the string and sorts the resulting strings alphabetically.
+    Takes a list of strings. For each string, splits the string and sorts the resulting strings alphabetically. Sorts
+    each list of strings by length. Returns the split and sorted list of strings.
     """
     string_list_split = [i.split(' ') for i in string_list]
     for i in string_list_split:
         for j in range(len(i)):
             i[j] = sorted(i[j])
             i[j] = ''.join(i[j])
+        i.sort(key=len)
     return string_list_split
