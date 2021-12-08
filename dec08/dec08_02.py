@@ -1,3 +1,18 @@
+"""
+Segments:
+
+  --s1--
+|        |
+s2      s3
+|        |
+  --s4--
+|        |
+s5      s6
+|        |
+  --s7--
+
+"""
+
 from input_handler import convert_for_part_two
 import segment_handler as sh
 
@@ -9,4 +24,9 @@ segment_input, segment_output = convert_for_part_two(segment)
 # print(segment_input)
 # print(segment_output)
 
-print(f"segment s5: {sh.segment_s5(segment_input[2])}")
+s5, nine_index = sh.segment_s5(segment_input[0])
+print(f"segment s5: {s5}")
+s1 = sh.segment_s1(segment_input[0])
+print(f"segment s1: {s1}")
+s7 = sh.segment_s7(segment_input[0], nine_index)
+print(f"segment s7: {s7}")
