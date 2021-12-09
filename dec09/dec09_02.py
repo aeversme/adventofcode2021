@@ -1,5 +1,5 @@
 from input_handler import convert_input
-from edge_corner_handler import check_corner, check_edge
+from low_point_handler import find_low_points
 
 with open('heightmap.txt') as h:
     heightmap_raw = h.readlines()

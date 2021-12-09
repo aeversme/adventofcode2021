@@ -17,7 +17,7 @@ def calc_risk_level():
     low_points = find_low_points(heightmap)
     risk_level = 0
     for i in low_points:
-        risk_level += int(i) + 1
+        risk_level += int(i[0]) + 1
     return risk_level
 
 
