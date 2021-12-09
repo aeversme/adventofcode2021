@@ -4,7 +4,8 @@ from edge_corner_handler import check_corner, check_edge
 def find_low_points(heightmap):
     """
     Finds low points in the heightmap. If the number at any [row][column] coordinate is lower than the four adjacent
-    numbers (diagonals excluded), adds that number to the list of low points. Returns the list of low points.
+    numbers (diagonals excluded), adds a sublist of that number and its coordinates to the list of low points.
+    Returns the list of lists of low points and their coordinates.
     """
 
     row_max = len(heightmap) - 1
