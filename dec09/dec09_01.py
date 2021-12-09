@@ -17,18 +17,14 @@ print(heightmap)
 
 
 def find_low_spots():
-    row_min = 0
-    row_max = len(heightmap)
-    print(f"row_max: {row_max}")
-    col_min = 0
-    col_max = len(heightmap[0])
-    print(f"col_max: {col_max}")
+    row_max = len(heightmap) - 1
+    col_max = len(heightmap[0]) - 1
 
     low_points = []
 
     for i in range(len(heightmap)):
         for j in range(len(heightmap[0])):
-            if i == row_min or i == row_max or j == col_min or j == col_max:
+            if i == 0 or i == row_max or j == 0 or j == col_max:
                 corner_value = check_corner(heightmap, i, j)
                 if corner_value is not None:
                     low_points.append(corner_value)
