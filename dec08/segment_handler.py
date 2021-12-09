@@ -32,7 +32,7 @@ def segment_s5(input_list):
     """
 
     alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-    print(input_list)
+    # print(input_list)
     # determine index of string '9': must contain all letters of string '4'
     index = 0
     for i in range(6, 9):
@@ -146,5 +146,33 @@ def segment_s2_s4(input_list, nine_index):
     # determine which letter from '4' is not in '1' or s4
     for char in input_list[2]:
         if char not in input_list[0] and char != s4:
+            # print(f"{char} not in '1': {input_list[0]} and not {s4}")
             s2 = char
     return s4, s2
+
+
+def sort_join(input_list):
+    """
+    Takes a list of unsorted characters. Returns a sorted string.
+    """
+
+    input_list.sort()
+    string = ''.join(input_list)
+    return string
+
+
+def segment_decoder(s1, s2, s3, s4, s5, s6, s7):
+    """
+    Takes seven character inputs. Returns a dictionary of strings, with each key representing a number displayed on a
+    seven-segment display, and each alphabetically-sorted string value containing the letters associated with the
+    appropriate segments.
+    """
+
+    decoder_dict = {}
+    decoder_list = [[s1, s2, s3, s5, s6, s7], [s3, s6], [s1, s3, s4, s5, s7], [s1, s3, s4, s6, s7], [s2, s3, s4, s6],
+                    [s1, s2, s4, s6, s7], [s1, s2, s4, s5, s6, s7], [s1, s3, s6], [s1, s2, s3, s4, s5, s6, s7],
+                    [s1, s2, s3, s4, s6, s7]]
+    for i in range(len(decoder_list)):
+        decoder_dict[f'{i}'] = sort_join(decoder_list[i])
+    # print(decoder_dict)
+    return decoder_dict
