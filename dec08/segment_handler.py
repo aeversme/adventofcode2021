@@ -11,19 +11,29 @@ s5      s6
 |        |
   --s7--
 
-"""
+Using the sorted and ordered puzzle input, ex. ['be', 'bde', bceg', etc.], it is possible to determine the value of
+each segment (one of the letters from a - g) by analyzing the strings of lengths 2, 3, 4, and the three strings of
+length 6. These strings correspond to seven-segment displays of the integers '1', '7', '4', and some ordered
+combination of '6', '9', or '0', respectively.
 
-# string '1' is at [0]
-# string '7' is at [1]
-# string '4' is at [2]
-# string '6', '9', '0' are at [6], [7], [8]
+The segments are arbitrarily assigned variables s1 through s7 as seen in the above diagram.
+"""
 
 
 def segment_s5(input_list):
+    """
+    Takes a list of strings. Determines the input_list index of the string representing the number '9' on the display
+    by comparing the three six-character strings against the four-character string '4'. Of the display numbers '6',
+    '9', and '0', only '9' contains all of the same segments as '4'.
+
+    The letter that is missing from string '9' corresponds to segment s5.
+
+    Returns the letter for s5, and the index of string '9'.
+    """
+
     alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
     print(input_list)
-    # determine index of string '9'
-    # must contain all letters of string '4'
+    # determine index of string '9': must contain all letters of string '4'
     index = 0
     for i in range(6, 9):
         count = 0
@@ -44,6 +54,13 @@ def segment_s5(input_list):
 
 
 def segment_s1(input_list):
+    """
+    Takes a list of strings. Determines which letter from string '7' is not also in string '4'. That letter
+    corresponds to segment s1.
+
+    Returns the letter for s1.
+    """
+
     # determine which letter from string '7' is not also in string '4'
     s1 = ''
     for char in input_list[1]:
@@ -56,9 +73,12 @@ def segment_s1(input_list):
 
 def segment_s7(input_list, nine_index):
     """
-    Takes a list of strings and an index. Returns the letter from the string at the given index that is not found in
-    strings at index 1 or 2.
+    Takes a list of strings and an index. Determines which letter from strings '7' and '4' is not in string '9'
+    (referenced using the index calculated in segment_s5()). That letter corresponds to segment s7.
+
+    Returns the letter for s7.
     """
+
     # determine which letter from string '7' and '4' is not also in string '9'
     s7 = ''
     for char in input_list[nine_index]:
@@ -70,6 +90,13 @@ def segment_s7(input_list, nine_index):
 
 
 def segment_s6_s3(input_list):
+    """
+    Takes a list of strings. Determines which of the two letters from the string '1' is also in string '6', '9',
+    and '0'. This common letter corresponds to segment s6. The other letter in string '1' corresponds to segment s3.
+
+    Returns the letters for s6 and s3.
+    """
+
     # determine which letter from '1' is in '6', '9', and '0'
     s6 = ''
     s3 = ''
@@ -84,6 +111,18 @@ def segment_s6_s3(input_list):
 
 
 def segment_s2_s4(input_list, nine_index):
+    """
+    Takes a list of strings and an index. Determines the index of string '0' by removing the index for string '9'
+    from the list of possible indexes, and then checks which of the remaining strings contains both letters from
+    string '1'.
+
+    Determines which letter from string '4' is not in string '0'. This letter corresponds to segment s4.
+
+    Determines which letter from string '4' is not in string '1' or s4. This letter corresponds to s2.
+
+    Returns the letters for s4 and s2.
+    """
+
     sixes = [6, 7, 8]
     s4 = ''
     s2 = ''
