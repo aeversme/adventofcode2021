@@ -1,4 +1,4 @@
-def check_syntax_strings(syntax_string):
+def check_syntax_string(syntax_string):
     """
     Takes a string of characters. For each symbol s, if s is an opening symbol, adds the associated closing symbol to a
     list of expected symbols. If s is a closing symbol, checks to see if it matches the last symbol in the expected
