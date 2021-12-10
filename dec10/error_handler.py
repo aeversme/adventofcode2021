@@ -1,4 +1,10 @@
 def check_for_errors(syntax_string):
+    """
+    Takes a string of characters. For each symbol, if it an opening symbol, adds the associated closing symbol to a
+    list of expected symbols. If it is a closing symbol, checks to see if it matches the last symbol in the expected
+    symbols list. If so, removes the symbol from the end of the list. If not, returns the incorrect symbol.
+    """
+
     syntax_dict = {
         '(': ')',
         '[': ']',
@@ -20,6 +26,10 @@ def check_for_errors(syntax_string):
 
 
 def score_error(symbol):
+    """
+    Takes a single character. Returns the integer score associated with that character.
+    """
+
     symbol_scores = {
         ')': 3,
         ']': 57,
