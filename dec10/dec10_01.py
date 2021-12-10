@@ -1,5 +1,6 @@
 from input_handler import convert_input
-from error_handler import check_for_errors, score_error
+from string_handler import check_syntax_strings
+from score_handler import score_error
 
 with open('navsyntax.txt') as n:
     nav_raw = n.readlines()
@@ -11,9 +12,9 @@ nav_syntax = convert_input(nav_raw)
 def syntax_score(syntax_file):
     total_error_score = 0
     for syntax in syntax_file:
-        incorrect_symbol = check_for_errors(syntax)
-        if incorrect_symbol is not None:
-            error_score = score_error(incorrect_symbol)
+        check_result = check_syntax_strings(syntax)
+        if isinstance(check_result, str):
+            error_score = score_error(check_result)
             total_error_score += error_score
             # print(f"Error on line {syntax_file.index(syntax)}.")
             # print(f"Added {error_score} to total.")
