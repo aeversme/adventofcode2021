@@ -1,6 +1,6 @@
 def check_for_errors(syntax_string):
     """
-    Takes a string of characters. For each symbol, if it an opening symbol, adds the associated closing symbol to a
+    Takes a string of characters. For each symbol, if it is an opening symbol, adds the associated closing symbol to a
     list of expected symbols. If it is a closing symbol, checks to see if it matches the last symbol in the expected
     symbols list. If so, removes the symbol from the end of the list. If not, returns the incorrect symbol.
     """
