@@ -14,15 +14,15 @@ def error_score(syntax_file):
     for syntax in syntax_file:
         check_result = check_syntax_string(syntax)
         if isinstance(check_result, str):
-            error_score = score_error(check_result)
-            total_error_score += error_score
+            score = score_error(check_result)
+            total_error_score += score
             # print(f"Error on line {syntax_file.index(syntax)}.")
-            # print(f"Added {error_score} to total.")
+            # print(f"Added {score} to total.")
         else:
             # print(f"No errors on line {syntax_file.index(syntax)}.")
             continue
     return total_error_score
 
 
-score = error_score(nav_syntax)
-print(f"The total error score is: {score}")
+total_score = error_score(nav_syntax)
+print(f"The total error score is: {total_score}")
