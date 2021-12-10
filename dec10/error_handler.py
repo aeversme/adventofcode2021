@@ -1,4 +1,4 @@
-def check_syntax(syntax_string):
+def check_for_errors(syntax_string):
     syntax_dict = {
         '(': ')',
         '[': ']',
@@ -12,7 +12,7 @@ def check_syntax(syntax_string):
         else:
             if symbol != expected_close[-1]:
                 incorrect_close = symbol
-                print(f"Expected '{expected_close[-1]}', but found '{incorrect_close}' instead.")
+                # print(f"Expected '{expected_close[-1]}', but found '{incorrect_close}' instead.")
                 return incorrect_close
             else:
                 expected_close.pop(-1)
