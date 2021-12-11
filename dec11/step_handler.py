@@ -1,18 +1,3 @@
-"""
-TODO:
-in each step:
-
-[done] increment each octopus by 1
-
-any octopus with energy > 9 'flashes.' all adjacent octopuses get +1 energy, including diagonal. checks needed: out
-of bounds, and keep track of flashing octopus coordinates. no octopus can flash more than once per step. use a while
-loop and a flash counter so that while number of flashes != 0, loop through and check for energy > 9
-
-loop through list of coordinates of octopuses that flashed during that step, and reset energy at those coordinates to
-zero
-"""
-
-
 def add_one(grid):
     """
     Takes a grid (list of lists) of integers. Adds 1 to every integer in the grid. Returns the grid.
@@ -32,30 +17,38 @@ def is_on_map(grid, row, col):
 
     rules = [row < 0, row > (len(grid) - 1), col < 0, col > (len(grid[0]) - 1)]
     if any(rules):
-        print("Not on map.")
         return False
     return True
 
 
-# TODO: pass grid back somehow
 def flash_octopus(grid, row, col):
-    flashing_octopus = grid[row][col]
-    print(f"Flash octopus with energy {flashing_octopus} at [{row}, {col}]")
-    for row_incr in range(-1, 2):
-        for col_incr in range(-1, 2):
-            adjacent_octopus = grid[row + row_incr][col + col_incr]
-            print(f"Checking row {row + row_incr}, col {col + col_incr}...")
-            if is_on_map(grid, row + row_incr, col + col_incr) and [row_incr, col_incr] != [0, 0]:
-                print(f"Adding one to {adjacent_octopus} at [{row + row_incr}, {col + col_incr}]")
-                adjacent_octopus += 1
-    return
+    """
+    Takes a grid and two integers. Checks all adjacent grid locations, including diagonally. If the location is on
+    the map, increments the value at that location by 1. Returns the grid.
+    """
+
+    for row_increment in range(-1, 2):
+        for col_increment in range(-1, 2):
+            if is_on_map(grid, row + row_increment, col + col_increment) and [row_increment, col_increment] != [0, 0]:
+                grid[row + row_increment][col + col_increment] += 1
+    return grid
 
 
 def step(grid):
     grid_plus_energy = add_one(grid)
-    print(grid_plus_energy)
-    for row in range(len(grid_plus_energy)):
-        for col in range(len(grid_plus_energy[0])):
-            if grid_plus_energy[row][col] > 9:
-                flash_octopus(grid_plus_energy, row, col)
-    return grid
+    flashed_grid = grid_plus_energy
+    flashed_octopuses = []
+    loop_counter = -1
+    total_flashes = 0
+    while loop_counter != 0:
+        loop_counter = 0
+        for row in range(len(grid_plus_energy)):
+            for col in range(len(grid_plus_energy[0])):
+                if grid_plus_energy[row][col] > 9 and [row, col] not in flashed_octopuses:
+                    flashed_grid = flash_octopus(grid_plus_energy, row, col)
+                    loop_counter += 1
+                    total_flashes += 1
+                    flashed_octopuses.append([row, col])
+    for octopus in flashed_octopuses:
+        flashed_grid[octopus[0]][octopus[1]] = 0
+    return flashed_grid, total_flashes
