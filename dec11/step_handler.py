@@ -32,19 +32,21 @@ def is_on_map(grid, row, col):
 
     rules = [row < 0, row > (len(grid) - 1), col < 0, col > (len(grid[0]) - 1)]
     if any(rules):
+        print("Not on map.")
         return False
     return True
 
 
-# TODO: bug in this function, not looking at all adjacent locations
+# TODO: pass grid back somehow
 def flash_octopus(grid, row, col):
     flashing_octopus = grid[row][col]
     print(f"Flash octopus with energy {flashing_octopus} at [{row}, {col}]")
     for row_incr in range(-1, 2):
         for col_incr in range(-1, 2):
             adjacent_octopus = grid[row + row_incr][col + col_incr]
-            if is_on_map(grid, row + row_incr, col + col_incr) and adjacent_octopus != flashing_octopus:
-                print(f"Adding one to {adjacent_octopus} at [{[row + row_incr]}, {[col + col_incr]}]")
+            print(f"Checking row {row + row_incr}, col {col + col_incr}...")
+            if is_on_map(grid, row + row_incr, col + col_incr) and [row_incr, col_incr] != [0, 0]:
+                print(f"Adding one to {adjacent_octopus} at [{row + row_incr}, {col + col_incr}]")
                 adjacent_octopus += 1
     return
 
