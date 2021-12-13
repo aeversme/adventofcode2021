@@ -10,7 +10,14 @@ def find_grid_maximums(coord_list):
     return max_x, max_y
 
 
-def create_grid(coord_list):
+def add_dots(grid, coord_list):
+    for element in coord_list:
+        grid[element[1]][element[0]] = '#'
+    return grid
+
+
+def create_paper(coord_list):
     max_x, max_y = find_grid_maximums(coord_list)
     grid = [['.'] * max_x for _ in range(max_y)]
-    return grid
+    grid_with_dots = add_dots(grid, coord_list)
+    return grid_with_dots
