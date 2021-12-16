@@ -26,6 +26,20 @@ def create_chiton_map(data):
 
 
 def create_chiton_cave(data):
+    """
+    Takes a list of strings.
+
+    Creates a 5x by 5x larger version of the list by:
+    - appending four copies of the full list, incrementing each numerical character by one with each new copy and
+    wrapping numbers greater than 9, and
+    - for each string in the longer list, appending four copies of that string to itself, incrementing the numerical
+    characters in the same way.
+
+    In the larger list of longer strings, creates a Chiton object for each numerical character in the string and
+    appends it to a row list. After a string is fully processed, that row is appended to a list to create a
+    two-dimensional list. Returns the two-dimensional list.
+    """
+
     chiton_strings = convert_input(data)
     wrap_dict = {
         10: 1,
