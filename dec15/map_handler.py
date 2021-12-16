@@ -35,9 +35,8 @@ def create_chiton_cave(data):
     - for each string in the longer list, appending four copies of that string to itself, incrementing the numerical
     characters in the same way.
 
-    In the larger list of longer strings, creates a Chiton object for each numerical character in the string and
-    appends it to a row list. After a string is fully processed, that row is appended to a list to create a
-    two-dimensional list. Returns the two-dimensional list.
+    Calls create_chiton_map on the larger list of longer strings. Returns the resulting two-dimensional list of
+    Chiton objects.
     """
 
     chiton_strings = convert_input(data)
@@ -69,15 +68,7 @@ def create_chiton_cave(data):
                     new_num = wrap_dict[new_num]
                 cave_strings[r] += str(new_num)
 
-    chitons = []
-
-    for r in range(len(cave_strings)):
-        row = []
-        for c in range(len(cave_strings[0])):
-            row.append(Chiton(r, c, cave_strings[r][c]))
-        chitons.append(row)
-
-    chitons[0][0].distance = 0
+    chitons = create_chiton_map(cave_strings)
 
     return chitons
 
