@@ -87,16 +87,22 @@ def is_on_map(chiton_map, row, col):
     return True
 
 
-def find_smallest_distance(chiton_map):
+def find_smallest_distance(chiton_map, active_nodes):
     """
     Takes a two-dimensional list. Returns the object with the smallest distance attribute.
     """
 
     current_node = None
     distance = np.inf
-    for r in range(len(chiton_map)):
-        for c in range(len(chiton_map[0])):
-            if chiton_map[r][c].distance < distance and not chiton_map[r][c].visited:
-                distance = chiton_map[r][c].distance
-                current_node = chiton_map[r][c]
+    if active_nodes:
+        for node in active_nodes:
+            if node.distance < distance:
+                distance = node.distance
+                current_node = node
+    else:
+        for r in range(len(chiton_map)):
+            for c in range(len(chiton_map[0])):
+                if chiton_map[r][c].distance < distance and not chiton_map[r][c].visited:
+                    distance = chiton_map[r][c].distance
+                    current_node = chiton_map[r][c]
     return current_node
