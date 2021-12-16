@@ -38,9 +38,8 @@ def dijkstra_step(chitons, node, active_nodes):
 
 
 def clear_node_from_active(node, active_nodes):
-    for i in range(len(active_nodes)):
-        if active_nodes[i] == node:
-            active_nodes.remove(node)
+    if active_nodes.count(node) > 0:
+        active_nodes.pop(active_nodes.index(node))
     return active_nodes
 
 

@@ -94,15 +94,15 @@ def find_smallest_distance(chiton_map, active_nodes):
 
     current_node = None
     distance = np.inf
-    if active_nodes:
-        for node in active_nodes:
-            if node.distance < distance:
-                distance = node.distance
-                current_node = node
+    # TODO: get this part to evaluate properly
+    for node in active_nodes:
+        if node.distance < distance:
+            distance = node.distance
+            current_node = node
     else:
-        for r in range(len(chiton_map)):
-            for c in range(len(chiton_map[0])):
-                if chiton_map[r][c].distance < distance and not chiton_map[r][c].visited:
-                    distance = chiton_map[r][c].distance
-                    current_node = chiton_map[r][c]
+        # for r in range(len(chiton_map)):
+        #     for c in range(len(chiton_map[0])):
+        #         if chiton_map[r][c].distance < distance and not chiton_map[r][c].visited:
+        #             distance = chiton_map[r][c].distance
+        current_node = chiton_map[0][0]
     return current_node
