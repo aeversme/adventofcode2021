@@ -1,23 +1,48 @@
-from input_handler import convert_input
+from map_handler import create_chiton_map, is_on_map, find_smallest_distance
 
-with open('test-chiton.txt') as c:
-    chiton_raw = c.readlines()
+with open('chiton.txt') as ch:
+    chiton_raw = ch.readlines()
+
+chiton_map = create_chiton_map(chiton_raw)
 
 
-chiton_map = convert_input(chiton_raw)
-print(chiton_map)
+def dijkstra_step(chitons, node):
+    """
+    Takes a list of lists of Chiton objects, and a Chiton object. Implements one step of the Dijkstra shortest path
+    algorithm:
+    - Evaluates all neighbors of the node (Chiton object). If a neighbor is within the map boundary, has not been
+    marked as visited, and the sum of the current node distance (from the starting node) and the neighbor's value is
+    less than the neighbor's distance, sets the neighbor's distance to that sum.
+    - Sets the current node's visited attribute to True.
+    """
 
-# can only move up, down, left, right
-# start at 0,0; must get to max_x,max_y
-# add up value at each position entered/moved to
-# don't count starting position
-# find path with lowest total value
-# lowest path value in test-chiton = 40
+    row = node.row
+    col = node.col
+    directions = [[row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]]
+    for direction in directions:
+        r = direction[0]
+        c = direction[1]
+        if is_on_map(chitons, r, c) and not chitons[r][c].visited and node.distance + chitons[r][c].value\
+                < chitons[r][c].distance:
+            chitons[r][c].distance = node.distance + chitons[r][c].value
+            chitons[r][c].parent = [node.row, node.col]
+    node.visited = True
 
-# ideas:
-# evaluate paths of x number of steps ahead of current position
-# evaluation function will be recursive (?), and also have to keep track of paths of all evaluations in that step
-# move to next value on lowest path and reevaluate
-# shouldn't double back on itself
-# movement function will be recursive?
-# base case: if current position = end position
+
+def find_lowest_value_path():
+    """
+    Determines which Chiton object is in the bottom right corner of the map. While that object's visited attribute is
+    False:
+    - Sets the current node to the Chiton object on the map with the smallest distance attribute.
+    - Performs one step of the Dijkstra algorithm using the current node.
+    Once the bottom right object's visited attribute is set to True, returns that object's distance attribute.
+    """
+
+    bottom_right = chiton_map[len(chiton_map) - 1][len(chiton_map[0]) - 1]
+    while not bottom_right.visited:
+        current_node = find_smallest_distance(chiton_map)
+        dijkstra_step(chiton_map, current_node)
+    return bottom_right.distance
+
+
+print(f"Lowest total risk: {find_lowest_value_path()}")
