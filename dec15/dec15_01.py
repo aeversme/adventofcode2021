@@ -1,6 +1,6 @@
 from map_handler import create_chiton_map, create_chiton_cave, is_on_map, find_smallest_distance
 
-with open('chiton.txt') as ch:
+with open('test-chiton.txt') as ch:
     chiton_raw = ch.readlines()
 
 part_one = False
@@ -54,8 +54,8 @@ def find_lowest_value_path():
 
     bottom_right = chiton_map[len(chiton_map) - 1][len(chiton_map[0]) - 1]
     step_count = 0
+    active_nodes = []
     while not bottom_right.visited:
-        active_nodes = []
         current_node = find_smallest_distance(chiton_map, active_nodes)
         dijkstra_step(chiton_map, current_node, active_nodes)
         active_nodes = clear_node_from_active(current_node, active_nodes)
