@@ -1,11 +1,15 @@
 from input_handler import convert_input
 from conversion_handler import binary_to_decimal
 
-with open('test-packet.txt') as p:
+with open('packet.txt') as p:
     packet_raw = p.read()
 
 binary_packet = convert_input(packet_raw)
 print(binary_packet)
+
+
+version_sum = 0
+trailing_zeros = 0
 
 
 def literal_value(binary_string):
@@ -23,34 +27,42 @@ def literal_value(binary_string):
 
 
 def decode_packet(packet):
+    global version_sum, trailing_zeros
+    print(f"Processing packet string: {packet}")
+    if set(packet) == {'0'}:
+        print("These are trailing zeros; packet ending.")
+        trailing_zeros = len(packet)
+        return
     version = binary_to_decimal(packet[:3])
     print(f"Version: {version}")
+    version_sum += version
     type_id = binary_to_decimal(packet[3:6])
-    print(f"Type ID: {type_id}")
-    packet_length = 0
+    # print(f"Type ID: {type_id}")
     if type_id == 4:
+        print("This is a literal value packet.")
         literal, bits = literal_value(packet[6:])
-        print(f"Literal value: {literal}")
+        # print(f"Literal value: {literal}")
         decoded_length = 6 + bits
-        trailing_zeros = 4 - (decoded_length % 4)
-        literal_length = decoded_length + trailing_zeros
-        if literal_length == len(packet):
-            packet_length += literal_length
-            return packet_length
+        if decoded_length == len(packet):
+            return
         else:
-            decode_packet(packet[packet_length:])
+            decode_packet(packet[decoded_length:])
     else:
         print("This is an operator packet.")
-        print(f"Length type ID: {packet[6]}")
-        if packet[6] == 0:
-            print("Next 15 bits are a number representing total length in bits of subpackets.")
+        # print(f"Length type ID: {packet[6]}")
+        if packet[6] == '0':
+            # print("Next 15 bits are a number representing total length in bits of subpackets.")
             subpacket_bits = binary_to_decimal(packet[7:22])
-            print(f"Subpacket bits: {subpacket_bits}")
+            # print(f"Subpacket(s) bits: {subpacket_bits}")
+            decode_packet(packet[22:])
         else:
-            print("Next 11 bits are a number representing number of subpackets in this packet.")
+            # print("Next 11 bits are a number representing number of subpackets in this packet.")
             subpacket_number = binary_to_decimal(packet[7:18])
-            print(f"Number of subpackets: {subpacket_number}")
+            # print(f"Number of subpackets: {subpacket_number}")
+            decode_packet(packet[18:])
+    return
 
 
-length = decode_packet(binary_packet)
-print(f"Packet length: {length}")
+decode_packet(binary_packet)
+print(f"\nVersion sum: {version_sum}")
+print(f"Trailing zeros: {trailing_zeros}")
