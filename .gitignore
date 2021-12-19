@@ -1,7 +1,8 @@
 /venv
 .idea/
-/dec*/test
-/dec*/test/*
+/dec05/test/
 /dec*/__pycache__/
 /dec*/__pycache__/*
 .pytest*
+*/tests/__pycache__/
+*/tests/__pycache__/*
