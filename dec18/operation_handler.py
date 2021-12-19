@@ -16,5 +16,6 @@ def check_for_reduction(number, count=0, reduction=None):
                 reduction_operand = pair_half
             elif type(pair_half) == list and reduction_type is None:
                 counter += 1
-                reduction_type, reduction_operand = check_for_reduction(pair_half, counter, reduction_type)
-    return reduction_type, reduction_operand
+                reduction_type, reduction_operand, counter = check_for_reduction(pair_half, counter, reduction_type)
+    counter -= 1
+    return reduction_type, reduction_operand, counter
