@@ -1,4 +1,4 @@
-from ..operation_handler import add_numbers, check_for_reduction, split_number
+from ..operation_handler import add_numbers, check_for_reduction, split_number, explode_pair
 
 
 def test_add_numbers():
@@ -25,12 +25,19 @@ def test_check_for_reduction():
     assert check_for_reduction(num5) == (None, None, -1)
 
 
-# TODO: change to match expected outcome of refactored function, this will fail currently (missing operand parameter)
 def test_split_number():
+    num1 = [1, 13]
+    num2 = [[1, 9], [12, 5]]
 
-    assert split_number(10) == [5, 5]
-    assert split_number(11) == [5, 6]
-    assert split_number(17) == [8, 9]
+    assert split_number(num1, 13) == [1, [6, 7]]
+    assert split_number(num2, 12) == [[1, 9], [[6, 6], 5]]
 
 
-# TODO: create test_explode_pair()
+def test_explode_pair():
+    num1 = [[6, [5, [4, [3, 2]]]], 1]
+    num2 = [7, [6, [5, [4, [3, 2]]]]]
+    num3 = [[[[[9, 8], 1], 2], 3], 4]
+
+    assert explode_pair(num1, [3, 2]) == [[6, [5, [7, 0]]], 3]
+    assert explode_pair(num2, [3, 2]) == [7, [6, [5, [7, 0]]]]
+    assert explode_pair(num3, [9, 8]) == [[[[0, 9], 2], 3], 4]
