@@ -17,13 +17,11 @@ def split_number(num, operand):
 
 def explode_pair(num, operand, index):
     num_string = str(num)
-    # print(f"starting num_string: {num_string}")
     operand_literal = literal_eval(operand)
     operand_first = operand_literal[0]
     operand_second = operand_literal[1]
 
     operand_index = index
-    # print(f"operand_index: {operand_index}")
 
     new_num_string = num_string
 
@@ -40,15 +38,10 @@ def explode_pair(num, operand, index):
             else:
                 left_num = new_num_string[i]
             break
-    # print(f"left_string: {left_string}")
-    # print(f"left_num: {left_num}")
     if left_num:
         new_left_num = str(int(left_num) + operand_first)
-        # print(f"new_l_n: {new_left_num}")
         new_left_string = left_string.replace(left_num, new_left_num)
-        # print(f"new_l_s: {new_left_string}")
-        new_num_string = new_num_string.replace(left_string + operand, new_left_string + operand)
-        # print(f"left_mod num_string: {num_string}")
+        new_num_string = new_num_string.replace(left_string + operand, new_left_string + operand, 1)
 
         # check for string length difference & modify operand_index
         if len(new_left_string) > len(left_string):
@@ -67,20 +60,14 @@ def explode_pair(num, operand, index):
             else:
                 right_num = new_num_string[j]
             break
-    # print(f"right_string: {right_string}")
-    # print(f"right_num: {right_num}")
     if right_num:
         new_right_num = str(int(right_num) + operand_second)
-        # print(f"new_r_n: {new_right_num}")
         new_right_string = right_string.replace(right_num, new_right_num)
-        # print(f"new_r_s: {new_right_string}")
-        new_num_string = new_num_string.replace(operand + right_string, operand + new_right_string)
-        # print(f"right_mod num_string: {num_string}")
+        new_num_string = new_num_string.replace(operand + right_string, operand + new_right_string, 1)
 
     # replace operand with regular number 0
     new_num_string = new_num_string.replace(new_left_string + operand + new_right_string,
                                             new_left_string + '0' + new_right_string)
-    # print(f"final num_string: {num_string}")
 
     new_num = literal_eval(new_num_string)
     return new_num
