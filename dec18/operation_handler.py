@@ -35,7 +35,7 @@ def explode_pair(num, operand, index):
         left_string = new_num_string[i] + left_string
         if new_num_string[i].isnumeric():
             if new_num_string[i - 1].isnumeric():
-                left_string = new_num_string[i - 1] +left_string
+                left_string = new_num_string[i - 1] + left_string
                 left_num = new_num_string[i - 1] + new_num_string[i]
             else:
                 left_num = new_num_string[i]
@@ -84,3 +84,16 @@ def explode_pair(num, operand, index):
 
     new_num = literal_eval(new_num_string)
     return new_num
+
+
+def calculate_magnitude(num):
+    first_half = 0
+    second_half = 0
+    for i in range(2):
+        if type(num[i]) == list:
+            num[i] = calculate_magnitude(num[i])
+        if i == 0:
+            first_half = num[i] * 3
+        else:
+            second_half = num[i] * 2
+    return first_half + second_half

@@ -59,18 +59,18 @@ def addition_with_checks(num1, num2):
     sum_copy = sum_nums.copy()
     needs_reduction = True
     while needs_reduction:
-        print("Checking if reduction is needed...")
+        # print("Checking if reduction is needed...")
         reduction_type, reduction_operand, operand_index = check_for_reduction(sum_copy)
         if reduction_type == 'split':
-            print(f"Splitting needed on {reduction_operand}...")
+            # print(f"Splitting needed on {reduction_operand}...")
             sum_copy = split_number(sum_copy, reduction_operand)
-            print(f"after split: {sum_copy}")
+            # print(f"after split: {sum_copy}")
         elif reduction_type == 'explode':
-            print(f"Explosion needed on {reduction_operand}...")
+            # print(f"Explosion needed on {reduction_operand}...")
             sum_copy = explode_pair(sum_copy, reduction_operand, operand_index)
-            print(f"after explode: {sum_copy}")
+            # print(f"after explode: {sum_copy}")
         else:
-            print("No further reductions needed.")
+            # print("No further reductions needed.")
             needs_reduction = False
 
     return sum_copy
