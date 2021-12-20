@@ -42,13 +42,13 @@ def addition_with_checks(num1, num2):
     while needs_reduction:
         reduction_type, reduction_operand, operand_index = check_for_reduction(sum_copy)
         if reduction_type == 'split':
-            print(f"called split: {sum_copy} splitting value: {reduction_operand}")
+            # print(f"called split:   {sum_copy} splitting value: {reduction_operand}")
             sum_copy = split_number(sum_copy, reduction_operand)
         elif reduction_type == 'explode':
-            print(f"called explode: {sum_copy} exploding pair: {reduction_operand}")
+            # print(f"called explode: {sum_copy} exploding pair: {reduction_operand}")
             sum_copy = explode_pair(sum_copy, reduction_operand, operand_index)
         else:
-            print("No further reductions needed.")
+            # print("No further reductions needed.")
             needs_reduction = False
 
     return sum_copy
