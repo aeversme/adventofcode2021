@@ -7,22 +7,22 @@ def add_numbers(num1, num2):
 
 def split_number(num, operand):
     num_string = str(num)
-    first_half = operand // 2
-    second_half = operand - first_half
+    first_half = int(operand) // 2
+    second_half = int(operand) - first_half
     operand_split = str([first_half, second_half])
-    num_string = num_string.replace(str(operand), operand_split)
+    num_string = num_string.replace(operand, operand_split, 1)
     new_num = literal_eval(num_string)
     return new_num
 
 
-def explode_pair(num, operand):
+def explode_pair(num, operand, index):
     num_string = str(num)
     # print(f"starting num_string: {num_string}")
-    operand_string = str(operand)
-    operand_first = operand[0]
-    operand_second = operand[1]
+    operand_literal = literal_eval(operand)
+    operand_first = operand_literal[0]
+    operand_second = operand_literal[1]
 
-    operand_index = num_string.index(operand_string)
+    operand_index = index
     # print(f"operand_index: {operand_index}")
 
     new_num_string = num_string
@@ -34,7 +34,11 @@ def explode_pair(num, operand):
     for i in range(operand_index - 1, 0, -1):
         left_string = new_num_string[i] + left_string
         if new_num_string[i].isnumeric():
-            left_num = new_num_string[i]
+            if new_num_string[i - 1].isnumeric():
+                left_string = new_num_string[i - 1] +left_string
+                left_num = new_num_string[i - 1] + new_num_string[i]
+            else:
+                left_num = new_num_string[i]
             break
     # print(f"left_string: {left_string}")
     # print(f"left_num: {left_num}")
@@ -43,7 +47,7 @@ def explode_pair(num, operand):
         # print(f"new_l_n: {new_left_num}")
         new_left_string = left_string.replace(left_num, new_left_num)
         # print(f"new_l_s: {new_left_string}")
-        new_num_string = new_num_string.replace(left_string + operand_string, new_left_string + operand_string)
+        new_num_string = new_num_string.replace(left_string + operand, new_left_string + operand)
         # print(f"left_mod num_string: {num_string}")
 
         # check for string length difference & modify operand_index
@@ -54,10 +58,14 @@ def explode_pair(num, operand):
     right_string = ''
     right_num = None
     new_right_string = ''
-    for i in range(operand_index + len(operand_string), len(new_num_string) - 1):
-        right_string += new_num_string[i]
-        if new_num_string[i].isnumeric():
-            right_num = new_num_string[i]
+    for j in range(operand_index + len(operand), len(new_num_string) - 1):
+        right_string += new_num_string[j]
+        if new_num_string[j].isnumeric():
+            if new_num_string[j + 1].isnumeric():
+                right_string += new_num_string[j + 1]
+                right_num = new_num_string[j] + new_num_string[j + 1]
+            else:
+                right_num = new_num_string[j]
             break
     # print(f"right_string: {right_string}")
     # print(f"right_num: {right_num}")
@@ -66,11 +74,11 @@ def explode_pair(num, operand):
         # print(f"new_r_n: {new_right_num}")
         new_right_string = right_string.replace(right_num, new_right_num)
         # print(f"new_r_s: {new_right_string}")
-        new_num_string = new_num_string.replace(operand_string + right_string, operand_string + new_right_string)
+        new_num_string = new_num_string.replace(operand + right_string, operand + new_right_string)
         # print(f"right_mod num_string: {num_string}")
 
     # replace operand with regular number 0
-    new_num_string = new_num_string.replace(new_left_string + operand_string + new_right_string,
+    new_num_string = new_num_string.replace(new_left_string + operand + new_right_string,
                                             new_left_string + '0' + new_right_string)
     # print(f"final num_string: {num_string}")
 
