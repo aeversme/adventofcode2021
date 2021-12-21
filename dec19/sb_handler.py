@@ -13,11 +13,13 @@ class Scanner:
 
 
 class Beacon:
-    def __init__(self, x, y, z):
+    def __init__(self, x, y, z, scanner):
         self.x = x
         self.y = y
         self.z = z
+        self.scanned_by = scanner
         self.shared_with = None
+        self.on_beacon_list = False
 
     def __repr__(self):
         print(f"{self.x}, {self.y}, {self.z}")
