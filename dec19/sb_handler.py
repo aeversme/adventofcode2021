@@ -9,7 +9,7 @@ class Scanner:
         self.z = 0
 
     def __repr__(self):
-        print(f"Scanner: {self.name}, position {self.x}, {self.y}, {self.z}")
+        return f"Scanner: {self.name}, position {self.x}, {self.y}, {self.z}"
 
 
 class Beacon:
@@ -22,4 +22,4 @@ class Beacon:
         self.on_beacon_list = False
 
     def __repr__(self):
-        print(f"{self.x}, {self.y}, {self.z}")
+        return f"{self.x}, {self.y}, {self.z}"
