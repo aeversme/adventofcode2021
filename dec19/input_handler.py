@@ -1,4 +1,4 @@
-from sb_handler import Scanner, Beacon
+from class_handler import Scanner, Beacon
 
 
 def convert_input(data):
@@ -21,4 +21,4 @@ def convert_input(data):
             new_beacon = Beacon(beacon_coords[0], beacon_coords[1], beacon_coords[2], new_scanner)
             new_scanner.beacons.append(new_beacon)
 
-    return data_filter, scanners
+    return scanners
