@@ -1,4 +1,5 @@
 def find_shared_beacons(scanner1, scanner2):
+    # TODO: make this first part a sub-function
     diff_set_0 = set()
     diff_set_1 = set()
     sum_set_0 = set()
@@ -18,9 +19,12 @@ def find_shared_beacons(scanner1, scanner2):
     diff_int = diff_set_0.intersection(diff_set_1)
     sum_int = sum_set_0.intersection(sum_set_1)
 
+    # --- end sub-function ---
+
     shared_s1 = []
     shared_s2 = []
 
+    # TODO: make some or all of this a sub-function
     for num in diff_int:
         diff_s1 = []
         diff_s2 = []
@@ -36,6 +40,8 @@ def find_shared_beacons(scanner1, scanner2):
             shared_s2 = diff_s2
             scanner2.x = num
             break
+
+    # --- end sub-function ---
 
     print(f"shared from scanner 1: {shared_s1}")
     print(f"s1 shares {len(shared_s1)} beacons")
