@@ -1,4 +1,4 @@
-from ..mapping_handler import find_shared_beacons, find_diff_sum_nums
+from ..beacon_handler import find_shared_beacons, find_diff_sum_nums
 from ..input_handler import convert_input
 
 
