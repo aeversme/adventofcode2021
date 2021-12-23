@@ -17,12 +17,15 @@ class Beacon:
         self.x = x
         self.y = y
         self.z = z
-        self.rel_x = None
-        self.rel_y = None
-        self.rel_z = None
+        self.abs_x = None
+        self.abs_y = None
+        self.abs_z = None
         self.scanned_by = scanner
         self.shared_with = None
         self.on_beacon_list = False
 
     def __repr__(self):
-        return f"Beacon: {self.x}, {self.y}, {self.z}"
+        if self.abs_x:
+            return f"Beacon: {self.abs_x}, {self.abs_y}, {self.abs_z}"
+        else:
+            return f"Beacon: {self.x}, {self.y}, {self.z}"

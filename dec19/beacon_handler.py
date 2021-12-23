@@ -102,3 +102,7 @@ def find_shared_beacons(scanner1, scanner2):
             beacon.shared_with = scanner1
 
     return shared_s1, shared_s2
+
+
+# TODO: calculate orientation of scanner2
+# TODO: calculate absolute positions of scanner2 beacons
