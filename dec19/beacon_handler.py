@@ -70,6 +70,9 @@ def find_shared_beacons(scanner1, scanner2):
 
     diff_int, sum_int = find_diff_sum_nums(scanner1, scanner2, s2_beacon_count)
 
+    print(f"diff_int numbers: {diff_int}")
+    print(f"sum_int numbers: {sum_int}")
+
     shared_s1 = []
     shared_s2 = []
 
