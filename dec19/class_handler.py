@@ -7,9 +7,14 @@ class Scanner:
         self.x = 0
         self.y = 0
         self.z = 0
+        self.parent_scanners = []
+        self.child_scanners = []
 
     def __repr__(self):
-        return f"{self.name}: position {self.x}, {self.y}, {self.z}"
+        if self.name == "Scanner 0" or (self.name != "Scanner 0" and self.x != 0):
+            return f"{self.name}: position {self.x}, {self.y}, {self.z}"
+        else:
+            return f"{self.name}"
 
 
 class Beacon:
