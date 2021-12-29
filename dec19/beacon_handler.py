@@ -1,3 +1,10 @@
+def increment_value(number, dictionary, key):
+    if number not in dictionary[key].keys():
+        dictionary[key][number] = 1
+    else:
+        dictionary[key][number] += 1
+
+
 def find_diff_sum_nums(scanner1, scanner2):
     s1_beacon_count = len(scanner1.beacons)
     s2_beacon_count = len(scanner2.beacons)
@@ -14,16 +21,10 @@ def find_diff_sum_nums(scanner1, scanner2):
 
     for i in range(s1_beacon_count):
         for j in range(s2_beacon_count):
-            diff_xx = scanner1.beacons[i].x - scanner2.beacons[j].x
-            if diff_xx not in diff_dict['diff_xx'].keys():
-                diff_dict['diff_xx'][diff_xx] = 1
-            else:
-                diff_dict['diff_xx'][diff_xx] += 1
-            diff_xy = scanner1.beacons[i].x - scanner2.beacons[j].y
-            if diff_xy not in diff_dict['diff_xy'].keys():
-                diff_dict['diff_xy'][diff_xy] = 1
-            else:
-                diff_dict['diff_xy'][diff_xy] += 1
+
+            increment_value(scanner1.beacons[i].x - scanner2.beacons[j].x, diff_dict, 'diff_xx')
+            increment_value(scanner1.beacons[i].x - scanner2.beacons[j].y, diff_dict, 'diff_xy')
+
             diff_xz = scanner1.beacons[i].x - scanner2.beacons[j].z
             if diff_xz not in diff_dict['diff_xz'].keys():
                 diff_dict['diff_xz'][diff_xz] = 1
@@ -116,7 +117,79 @@ def filter_ge_12(dictionary):
     return {k: v for (k, v) in dictionary.items() if v >= 12}
 
 
+def get_scanner_coordinates(*dicts):
+    x = 0
+    y = 0
+    z = 0
+    for dictionary in dicts:
+        for key, value in dictionary.items():
+            key_split = key.split('_')
+            if key_split[1][0] == 'x':
+                x = list(value.keys())[0]
+            elif key_split[1][0] == 'y':
+                y = list(value.keys())[0]
+            else:
+                z = list(value.keys())[0]
+    return x, y, z
+
+
+def get_scanner_transform(*dicts):
+    transform_matrix = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ]
+    for dictionary in dicts:
+        for key, value in dictionary.items():
+            key_split = key.split('_')
+            scanner1_axis = key_split[1][0]
+            scanner2_axis = key_split[1][1]
+            operation = key_split[0][0]
+
+            if scanner1_axis == 'x':
+                if scanner2_axis == 'x' and operation == 'd':
+                    transform_matrix[0][0] = 1
+                elif scanner2_axis == 'x' and operation == 's':
+                    transform_matrix[0][0] = -1
+                elif scanner2_axis == 'y' and operation == 'd':
+                    transform_matrix[0][1] = 1
+                elif scanner2_axis == 'y' and operation == 's':
+                    transform_matrix[0][1] = -1
+                elif scanner2_axis == 'z' and operation == 'd':
+                    transform_matrix[0][2] = 1
+                elif scanner2_axis == 'z' and operation == 's':
+                    transform_matrix[0][2] = -1
+            elif scanner1_axis == 'y':
+                if scanner2_axis == 'x' and operation == 'd':
+                    transform_matrix[1][0] = 1
+                elif scanner2_axis == 'x' and operation == 's':
+                    transform_matrix[1][0] = -1
+                elif scanner2_axis == 'y' and operation == 'd':
+                    transform_matrix[1][1] = 1
+                elif scanner2_axis == 'y' and operation == 's':
+                    transform_matrix[1][1] = -1
+                elif scanner2_axis == 'z' and operation == 'd':
+                    transform_matrix[1][2] = 1
+                elif scanner2_axis == 'z' and operation == 's':
+                    transform_matrix[1][2] = -1
+            else:
+                if scanner2_axis == 'x' and operation == 'd':
+                    transform_matrix[2][0] = 1
+                elif scanner2_axis == 'x' and operation == 's':
+                    transform_matrix[2][0] = -1
+                elif scanner2_axis == 'y' and operation == 'd':
+                    transform_matrix[2][1] = 1
+                elif scanner2_axis == 'y' and operation == 's':
+                    transform_matrix[2][1] = -1
+                elif scanner2_axis == 'z' and operation == 'd':
+                    transform_matrix[2][2] = 1
+                elif scanner2_axis == 'z' and operation == 's':
+                    transform_matrix[2][2] = -1
+    return transform_matrix
+
+
 def find_shared_beacons(scanner1, scanner2):
+    print(f"Processing {scanner1}\nand {scanner2}...")
 
     diff_dict, sum_dict = find_diff_sum_nums(scanner1, scanner2)
 
@@ -125,45 +198,27 @@ def find_shared_beacons(scanner1, scanner2):
 
     diff_dict_filter = {k: v for (k, v) in diff_subdict_filter.items() if len(v) > 0}
     sum_dict_filter = {k: v for (k, v) in sum_subdict_filter.items() if len(v) > 0}
+    print(diff_dict_filter)
+    print(sum_dict_filter)
 
-    # if diff_dict_filter:
-    #     print(f"=== diff_dict filtered: {diff_dict_filter}")
-    # if sum_dict_filter:
-    #     print(f"=== sum_dict filtered: {sum_dict_filter}")
+    if diff_dict_filter or sum_dict_filter:
+        scanner2.parent_scanner = scanner1
+        x, y, z = get_scanner_coordinates(diff_dict_filter, sum_dict_filter)
+        print(f"x: {x}, y: {y}, z: {z}")
+        scanner2.rel_x = x
+        scanner2.rel_y = y
+        scanner2.rel_z = z
+        transform_matrix = get_scanner_transform(diff_dict_filter, sum_dict_filter)
+        print(transform_matrix)
+        scanner2.transform_matrix = transform_matrix
+        print(scanner2)
 
-    # shared_s1 = []
-    # shared_s2 = []
-    #
-    # for diff_num in diff_int:
-    #     diff_s1, diff_s2 = find_diff_shared_beacons(diff_num, s1_beacon_count, s2_beacon_count, scanner1, scanner2)
-    #     if len(diff_s1) >= 12:
-    #         shared_s1 = diff_s1
-    #         shared_s2 = diff_s2
-    #         scanner2.x = diff_num
-    #         break
-    #     else:
-    #         for sum_num in sum_int:
-    #             sum_s1, sum_s2 = find_sum_shared_beacons(sum_num, s1_beacon_count, s2_beacon_count, scanner1, scanner2)
-    #             if len(sum_s1) >= 12:
-    #                 shared_s1 = sum_s1
-    #                 shared_s2 = sum_s2
-    #                 if shared_s1[0].x < 0:
-    #                     scanner2.x = -sum_num
-    #                 else:
-    #                     scanner2.x = sum_num
-    #                 break
-    #
-    # if not shared_s1:
-    #     print(f"No shared beacons:\n     {scanner1}\n     {scanner2}")
-    # else:
-    #     set_scanner_y_z(shared_s1, shared_s2, scanner2)
-    #     for beacon in shared_s1:
-    #         beacon.shared_with = scanner2
-    #     for beacon in shared_s2:
-    #         beacon.shared_with = scanner1
-    #
+        transformed_coordinates = scanner2.transform_beacon_coordinates()
+        print(f"{scanner2.name} transformed beacons: {transformed_coordinates}")
+        for i, coordinate in enumerate(transformed_coordinates):
+            print(f"{coordinate}")
+
+    else:
+        print("    No shared beacons.")
+
     return diff_dict_filter, sum_dict_filter
-
-
-# TODO: calculate orientation of scanner2
-# TODO: calculate absolute positions of scanner2 beacons
