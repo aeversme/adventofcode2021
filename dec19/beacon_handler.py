@@ -24,92 +24,28 @@ def find_diff_sum_nums(scanner1, scanner2):
 
             increment_value(scanner1.beacons[i].x - scanner2.beacons[j].x, diff_dict, 'diff_xx')
             increment_value(scanner1.beacons[i].x - scanner2.beacons[j].y, diff_dict, 'diff_xy')
+            increment_value(scanner1.beacons[i].x - scanner2.beacons[j].z, diff_dict, 'diff_xz')
 
-            diff_xz = scanner1.beacons[i].x - scanner2.beacons[j].z
-            if diff_xz not in diff_dict['diff_xz'].keys():
-                diff_dict['diff_xz'][diff_xz] = 1
-            else:
-                diff_dict['diff_xz'][diff_xz] += 1
+            increment_value(scanner1.beacons[i].y - scanner2.beacons[j].x, diff_dict, 'diff_yx')
+            increment_value(scanner1.beacons[i].y - scanner2.beacons[j].y, diff_dict, 'diff_yy')
+            increment_value(scanner1.beacons[i].y - scanner2.beacons[j].z, diff_dict, 'diff_yz')
 
-            diff_yx = scanner1.beacons[i].y - scanner2.beacons[j].x
-            if diff_yx not in diff_dict['diff_yx'].keys():
-                diff_dict['diff_yx'][diff_yx] = 1
-            else:
-                diff_dict['diff_yx'][diff_yx] += 1
-            diff_yy = scanner1.beacons[i].y - scanner2.beacons[j].y
-            if diff_yy not in diff_dict['diff_yy'].keys():
-                diff_dict['diff_yy'][diff_yy] = 1
-            else:
-                diff_dict['diff_yy'][diff_yy] += 1
-            diff_yz = scanner1.beacons[i].y - scanner2.beacons[j].z
-            if diff_yz not in diff_dict['diff_yz'].keys():
-                diff_dict['diff_yz'][diff_yz] = 1
-            else:
-                diff_dict['diff_yz'][diff_yz] += 1
+            increment_value(scanner1.beacons[i].z - scanner2.beacons[j].x, diff_dict, 'diff_zx')
+            increment_value(scanner1.beacons[i].z - scanner2.beacons[j].y, diff_dict, 'diff_zy')
+            increment_value(scanner1.beacons[i].z - scanner2.beacons[j].z, diff_dict, 'diff_zz')
 
-            diff_zx = scanner1.beacons[i].z - scanner2.beacons[j].x
-            if diff_zx not in diff_dict['diff_zx'].keys():
-                diff_dict['diff_zx'][diff_zx] = 1
-            else:
-                diff_dict['diff_zx'][diff_zx] += 1
-            diff_zy = scanner1.beacons[i].z - scanner2.beacons[j].y
-            if diff_zy not in diff_dict['diff_zy'].keys():
-                diff_dict['diff_zy'][diff_zy] = 1
-            else:
-                diff_dict['diff_zy'][diff_zy] += 1
-            diff_zz = scanner1.beacons[i].z - scanner2.beacons[j].z
-            if diff_zz not in diff_dict['diff_zz'].keys():
-                diff_dict['diff_zz'][diff_zz] = 1
-            else:
-                diff_dict['diff_zz'][diff_zz] += 1
+            increment_value(scanner1.beacons[i].x + scanner2.beacons[j].x, sum_dict, 'sum_xx')
+            increment_value(scanner1.beacons[i].x + scanner2.beacons[j].y, sum_dict, 'sum_xy')
+            increment_value(scanner1.beacons[i].x + scanner2.beacons[j].z, sum_dict, 'sum_xz')
 
-            sum_xx = scanner1.beacons[i].x + scanner2.beacons[j].x
-            if sum_xx not in sum_dict['sum_xx'].keys():
-                sum_dict['sum_xx'][sum_xx] = 1
-            else:
-                sum_dict['sum_xx'][sum_xx] += 1
-            sum_xy = scanner1.beacons[i].x + scanner2.beacons[j].y
-            if sum_xy not in sum_dict['sum_xy'].keys():
-                sum_dict['sum_xy'][sum_xy] = 1
-            else:
-                sum_dict['sum_xy'][sum_xy] += 1
-            sum_xz = scanner1.beacons[i].x + scanner2.beacons[j].z
-            if sum_xz not in sum_dict['sum_xz'].keys():
-                sum_dict['sum_xz'][sum_xz] = 1
-            else:
-                sum_dict['sum_xz'][sum_xz] += 1
+            increment_value(scanner1.beacons[i].y + scanner2.beacons[j].x, sum_dict, 'sum_yx')
+            increment_value(scanner1.beacons[i].y + scanner2.beacons[j].y, sum_dict, 'sum_yy')
+            increment_value(scanner1.beacons[i].y + scanner2.beacons[j].z, sum_dict, 'sum_yz')
 
-            sum_yx = scanner1.beacons[i].y + scanner2.beacons[j].x
-            if sum_yx not in sum_dict['sum_yx'].keys():
-                sum_dict['sum_yx'][sum_yx] = 1
-            else:
-                sum_dict['sum_yx'][sum_yx] += 1
-            sum_yy = scanner1.beacons[i].y + scanner2.beacons[j].y
-            if sum_yy not in sum_dict['sum_yy'].keys():
-                sum_dict['sum_yy'][sum_yy] = 1
-            else:
-                sum_dict['sum_yy'][sum_yy] += 1
-            sum_yz = scanner1.beacons[i].y + scanner2.beacons[j].z
-            if sum_yz not in sum_dict['sum_yz'].keys():
-                sum_dict['sum_yz'][sum_yz] = 1
-            else:
-                sum_dict['sum_yz'][sum_yz] += 1
+            increment_value(scanner1.beacons[i].z + scanner2.beacons[j].x, sum_dict, 'sum_zx')
+            increment_value(scanner1.beacons[i].z + scanner2.beacons[j].y, sum_dict, 'sum_zy')
+            increment_value(scanner1.beacons[i].z + scanner2.beacons[j].z, sum_dict, 'sum_zz')
 
-            sum_zx = scanner1.beacons[i].z + scanner2.beacons[j].x
-            if sum_zx not in sum_dict['sum_zx'].keys():
-                sum_dict['sum_zx'][sum_zx] = 1
-            else:
-                sum_dict['sum_zx'][sum_zx] += 1
-            sum_zy = scanner1.beacons[i].z + scanner2.beacons[j].y
-            if sum_zy not in sum_dict['sum_zy'].keys():
-                sum_dict['sum_zy'][sum_zy] = 1
-            else:
-                sum_dict['sum_zy'][sum_zy] += 1
-            sum_zz = scanner1.beacons[i].z + scanner2.beacons[j].z
-            if sum_zz not in sum_dict['sum_zz'].keys():
-                sum_dict['sum_zz'][sum_zz] = 1
-            else:
-                sum_dict['sum_zz'][sum_zz] += 1
     return diff_dict, sum_dict
 
 
@@ -189,7 +125,7 @@ def get_scanner_transform(*dicts):
 
 
 def find_shared_beacons(scanner1, scanner2):
-    print(f"Processing {scanner1}\nand {scanner2}...")
+    print(f"Processing {scanner1.name} and {scanner2.name}...")
 
     diff_dict, sum_dict = find_diff_sum_nums(scanner1, scanner2)
 
@@ -209,16 +145,18 @@ def find_shared_beacons(scanner1, scanner2):
         scanner2.rel_y = y
         scanner2.rel_z = z
         transform_matrix = get_scanner_transform(diff_dict_filter, sum_dict_filter)
-        print(transform_matrix)
+        # print(transform_matrix)
         scanner2.transform_matrix = transform_matrix
         print(scanner2)
-
-        transformed_coordinates = scanner2.transform_beacon_coordinates()
-        print(f"{scanner2.name} transformed beacons: {transformed_coordinates}")
-        for i, coordinate in enumerate(transformed_coordinates):
-            print(f"{coordinate}")
 
     else:
         print("    No shared beacons.")
 
     return diff_dict_filter, sum_dict_filter
+
+
+def transform_beacon_coordinates(scanner):
+    transformed_coordinates = scanner.transform_beacon_coordinates()
+    print(f"{scanner.name} transformed beacons: {transformed_coordinates}")
+    for i, coordinate in enumerate(transformed_coordinates):
+        print(f"{coordinate}")

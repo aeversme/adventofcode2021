@@ -8,6 +8,9 @@ class Scanner:
         self.rel_x = 0
         self.rel_y = 0
         self.rel_z = 0
+        self.abs_x = 0
+        self.abs_y = 0
+        self.abs_z = 0
         self.transform_matrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
         self.parent_scanner = None
         self.child_scanners = []
@@ -22,12 +25,31 @@ class Scanner:
         else:
             return f"{self.name}"
 
-    def xyz(self):
+    def rel_xyz(self):
         return [self.rel_x, self.rel_y, self.rel_z]
+
+    def abs_xyz(self):
+        return [self.abs_x, self.abs_y, self.abs_z]
+
+    def calc_scanner_absolute_coordinates(self):
+        scanner_xyz = self.rel_xyz()
+        new_xyz = [0, 0, 0]
+        if self.parent_scanner:
+            parent_xyz = self.parent_scanner.abs_xyz()
+            parent_transform = self.parent_scanner.transform_matrix
+            for i in range(3):
+                for j in range(3):
+                    new_xyz[i] += ((parent_xyz[j] * parent_transform[i][j]) + scanner_xyz[j]) * \
+                                  parent_transform[i][j]
+
+        self.abs_x = new_xyz[0]
+        self.abs_y = new_xyz[1]
+        self.abs_z = new_xyz[2]
+        return new_xyz
 
     def transform_beacon_coordinates(self):
         transformed_beacons = []
-        scanner_xyz = self.xyz()
+        scanner_xyz = self.rel_xyz()
         beacons_xyz = []
         for beacon in self.beacons:
             beacons_xyz.append(beacon.xyz())
