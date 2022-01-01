@@ -11,10 +11,11 @@ def setup():
 
 def test_find_diff_sum_nums():
     scanners = setup()
-    diff_int, sum_int = find_diff_sum_nums(scanners[0], scanners[1])
+    diff_dict, sum_dict = find_diff_sum_nums(scanners[0], scanners[1])
 
-    assert diff_int == {68, 1133}
-    assert sum_int == {864, 1133, 957, 919}
+    assert len(diff_dict) == 1271
+    assert len(sum_dict) == 1303
+    assert sum_dict[68] == 12
 
 
 def test_find_shared_beacons():

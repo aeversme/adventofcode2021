@@ -1,19 +1,57 @@
 from input_handler import convert_input
-from beacon_handler import find_shared_beacons
 
-with open('test-beacons.txt') as b:
+with open('beacons.txt') as b:
     beacons_raw = b.readlines()
 
-scanners = convert_input(beacons_raw)
 
-shared_s1, shared_s2 = find_shared_beacons(scanners[0], scanners[1])
-if shared_s1:
-    print(f"shared from scanner 1: {shared_s1}")
-    print(f"shared from scanner 2: {shared_s2}")
-    print(f"s2 shares {len(shared_s2)} beacons with s1")
-    print(f"{shared_s1[0]} from {scanners[0]} shared with {shared_s1[0].shared_with}")
+def map_ocean(data):
+    """
+    Takes a list of scanner names and beacon coordinates. Returns a list of Scanner objects and a list of unique
+    beacons.
+    """
+    scanner_list = convert_input(data)
+    print(f"There are {len(scanner_list)} scanners.")
 
-print("Unshared beacons:")
-for beacon in scanners[1].beacons:
-    if beacon.shared_with is None:
-        print(beacon)
+    scanners_copy = scanner_list.copy()
+    print("\nDiscovering scanner relationships...")
+    result = scanner_list[0].discover_scanner_relationships(scanners_copy)
+    if result == 0:
+        print("All scanner relationships processed.")
+
+    print("\nPrinting scanners...")
+    for scanner in scanner_list:
+        print(scanner)
+
+    print("\nCalculating scanner absolute coordinates...")
+    for n in range(1, len(scanner_list)):
+        scanner_list[n].calc_scanner_absolute_coordinates(scanner_list[n].rel_xyz())
+        print(f"{scanner_list[n].name} absolute coordinates: {scanner_list[n].abs_xyz()}")
+
+    print("\nCompiling list of unique beacons...")
+    coordinates = scanner_list[0].transform_beacon_coordinates()
+    uniques = {(coordinate[0], coordinate[1], coordinate[2]): coordinate for coordinate in coordinates}
+    return scanner_list, uniques
+
+
+scanners, unique_beacons = map_ocean(beacons_raw)
+print(f"There are {len(unique_beacons)} beacons.")
+
+
+def calc_biggest_distance(scanner_list):
+    """
+    Takes a list of scanners. Returns the biggest straight-line distance between any two scanners in the list.
+    """
+    print("\nCalculating largest distance between beacons...")
+    biggest_distance = 0
+    for i in range(len(scanner_list)):
+        for j in range(len(scanner_list)):
+            if i != j:
+                s1_xyz = scanner_list[i].abs_xyz()
+                s2_xyz = scanner_list[j].abs_xyz()
+                distance = (s1_xyz[0] - s2_xyz[0]) + (s1_xyz[1] - s2_xyz[1]) + (s1_xyz[2] - s2_xyz[2])
+                if distance > biggest_distance:
+                    biggest_distance = distance
+    return biggest_distance
+
+
+print(f"The largest distance between scanners is {calc_biggest_distance(scanners)} units.")
