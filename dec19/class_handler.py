@@ -26,28 +26,49 @@ class Scanner:
             return f"{self.name}"
 
     def rel_xyz(self):
+        """
+        Returns a list of three signed integers, representing the scanner's x, y, and z coordinates relative to its
+        immediate parent scanner.
+        """
         return [self.rel_x, self.rel_y, self.rel_z]
 
     def abs_xyz(self):
+        """
+        Returns a list of three signed integers, representing the scanner's x, y, and z coordinates relative to the
+        origin scanner [0, 0, 0].
+        """
         return [self.abs_x, self.abs_y, self.abs_z]
 
-    # def calc_scanner_absolute_coordinates(self):
-    #     scanner_xyz = self.rel_xyz()
-    #     new_xyz = [0, 0, 0]
-    #     if self.parent_scanner:
-    #         parent_xyz = self.parent_scanner.abs_xyz()
-    #         parent_transform = self.parent_scanner.transform_matrix
-    #         for i in range(3):
-    #             for j in range(3):
-    #                 new_xyz[i] += ((parent_xyz[j] * parent_transform[i][j]) + scanner_xyz[j]) * \
-    #                               parent_transform[i][j]
-    #
-    #     self.abs_x = new_xyz[0]
-    #     self.abs_y = new_xyz[1]
-    #     self.abs_z = new_xyz[2]
-    #     return new_xyz
+    def calc_scanner_absolute_coordinates(self, scanner_xyz):
+        """
+        Takes a list of three signed integers, representing relative x, y, and z coordinates. Returns a new list of
+        integers, sometimes recursively, representing absolute x, y, and z coordinates.
+        """
+        # scanner_xyz = self.rel_xyz()
+        new_xyz = [0, 0, 0]
+        if self.parent_scanner and self.parent_scanner.name != 'Scanner 0':
+            parent_xyz = self.parent_scanner.rel_xyz()
+            parent_transform = self.parent_scanner.transform_matrix
+            for n in range(3):
+                index = parent_transform[n][0]
+                transform_factor = parent_transform[n][1]
+                new_xyz[index] = (scanner_xyz[n] * transform_factor) + parent_xyz[index]
+            new_xyz = self.parent_scanner.calc_scanner_absolute_coordinates(new_xyz)
+        else:
+            for n in range(3):
+                new_xyz[n] = scanner_xyz[n]
+        self.abs_x = new_xyz[0]
+        self.abs_y = new_xyz[1]
+        self.abs_z = new_xyz[2]
+        return new_xyz
 
     def transform_beacon_coordinates(self):
+        """
+        Compiles a list of beacon coordinates (lists of three signed integers) by recursively adding a child
+        scanner's beacons and transforming those beacons to the parent scanner's coordinate system and orientation
+        before passing the list back through the stack. Returns a list of beacons whose coordinates are all in the
+        same system and orientation to one another.
+        """
         transformed_beacons = []
         scanner_xyz = self.rel_xyz()
         beacons_xyz = []
@@ -58,7 +79,7 @@ class Scanner:
             child_coordinates = child.transform_beacon_coordinates()
             for coordinate in child_coordinates:
                 beacons_xyz.append(coordinate)
-            print(f"child {child.name} passing back {len(child_coordinates)} coordinates...")
+            # print(f"child {child.name} passing back {len(child_coordinates)} coordinates...")
         for beacon_xyz in beacons_xyz:
             beacon_in_parent_xyz = [0, 0, 0]
             for n in range(3):
@@ -71,16 +92,23 @@ class Scanner:
         return transformed_beacons
 
     def discover_scanner_relationships(self, scanners):
+        """
+        Takes a list of Scanner objects. Compares all scanners in the list. If two scanners share enough beacons,
+        adds the second scanner to the first scanner's child scanners list. Recursively discovers relationships for
+        all scanners, such that each scanner only has one parent. As scanners are passed into the function,
+        removes the scanner from the list. If the list is empty, returns 0.
+        """
         if self in scanners:
             scanners.remove(self)
         for scanner in scanners:
             diff_dict_filter, sum_dict_filter = find_shared_beacons(self, scanner)
-            if diff_dict_filter or sum_dict_filter and scanner.parent_scanner == self:
+            if (diff_dict_filter or sum_dict_filter) and scanner.parent_scanner == self:
                 self.child_scanners.append(scanner)
-                scanners.remove(scanner)
-        print(f"{self.name} child scanners: {self.child_scanners}")
+        # print(f"{self.name} child scanners: {self.child_scanners}")
         for child in self.child_scanners:
             child.discover_scanner_relationships(scanners)
+        if len(scanners) == 0:
+            return 0
 
 
 class Beacon:
@@ -89,11 +117,13 @@ class Beacon:
         self.y = y
         self.z = z
         self.scanned_by = scanner
-        self.shared_with = None
-        self.on_beacon_list = False
 
     def __repr__(self):
         return f"Beacon: {self.x}, {self.y}, {self.z}"
 
     def xyz(self):
+        """
+        Returns a list of three signed integers, representing the beacon's x, y, and z coordinates relative to its
+        parent scanner.
+        """
         return [self.x, self.y, self.z]
