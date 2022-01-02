@@ -5,6 +5,7 @@ def count_lit_pixels(image):
     return lit_pixel_count
 
 
+# TODO: account for pixels outside scope of image, based on iteration; if even, pixels == '.'; else pixels == '#'
 def construct_pixel_binary(row, col, image):
     pixel_binary = ''
     grid = [
@@ -21,21 +22,33 @@ def construct_pixel_binary(row, col, image):
 
 
 def count_top_bottom_dark_lines(image):
-    blank_top_lines = [x for x in range(5) if image[x].count('#') == 0]
-    blank_bottom_lines = [x for x in range(len(image) - 1, len(image) - 6, -1) if image[x].count('#') == 0]
+    blank_top_lines = [i for i in range(5) if image[i].count('#') == 0]
+    blank_bottom_lines = [i for i in range(len(image) - 1, len(image) - 6, -1) if image[i].count('#') == 0]
     return len(blank_top_lines), len(blank_bottom_lines)
 
 
-# TODO: create function to count dark pixels at front and end of a given row
+# TODO: this is wrong, thinking in limited scope. this function goes away, as does the one above
+def count_start_end_dark_pixels(row):
+    pixel_count = [[row[:5], 0], [row[:-6:-1], 0]]
+    for i in range(2):
+        for string in pixel_count[i][0]:
+            for char in string:
+                if char == '.':
+                    pixel_count[i][1] += 1
+                else:
+                    break
+    return pixel_count[0][1], pixel_count[1][1]
 
 
 def convert_image(image_algorithm, image):
     top_line_count, bottom_line_count = count_top_bottom_dark_lines(image)
+    # TODO: this goes away, just iterate over every pixel in the expanded image
     converted_image = image[:(top_line_count - 1)]
     for row in range(top_line_count - 1, len(image) - bottom_line_count + 1):
         new_row = '.'
         # TODO: col range should be first and last lit pixel index
-        for col in range(1, len(image[1]) - 1):
+        leading_dark_pixels, trailing_dark_pixels = count_start_end_dark_pixels(image[row])
+        for col in range(leading_dark_pixels, len(image[1]) - trailing_dark_pixels - 1):
             pixel_binary = construct_pixel_binary(row, col, image)
             algorithm_index = int(pixel_binary, 2)
             new_row += image_algorithm[algorithm_index]

@@ -2,7 +2,7 @@ from input_handler import convert_input
 from map_handler import expand_trenchmap
 from pixel_handler import count_lit_pixels, convert_image
 
-with open('trenchmap.txt') as t:
+with open('test-trenchmap.txt') as t:
     trenchmap_raw = t.readlines()
 
 
