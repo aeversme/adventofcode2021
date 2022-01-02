@@ -13,6 +13,6 @@ def test_expand_trenchmap():
     _, trenchmap = setup()
     expanded_trenchmap = expand_trenchmap(trenchmap)
 
-    assert len(expanded_trenchmap) == len(trenchmap) + 8
-    assert len(expanded_trenchmap[2]) == len(trenchmap[2]) + 8
-    assert expanded_trenchmap[8] == '......###....'
+    assert len(expanded_trenchmap) == len(trenchmap) + 10
+    assert len(expanded_trenchmap[2]) == len(trenchmap[2]) + 10
+    assert expanded_trenchmap[9] == '.......###.....'
