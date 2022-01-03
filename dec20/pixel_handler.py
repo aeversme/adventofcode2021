@@ -1,12 +1,33 @@
 def count_lit_pixels(image):
+    """
+    Takes a list of strings. Returns a count of the number of '#' characters in the list.
+    """
     lit_pixel_count = 0
     for line in image:
         lit_pixel_count += line.count('#')
     return lit_pixel_count
 
 
-# TODO: account for pixels outside scope of image, based on iteration; if even, pixels == '.'; else pixels == '#'
-def construct_pixel_binary(row, col, image):
+def is_not_on_image(row, col, image):
+    """
+    Takes an 'image' (a list of strings) and two integer values. Determines if the the row or column values fall
+    outside the index range of the image; if so, returns True. Otherwise (if [row][column] is within the bounds of the
+    image), returns False.
+    """
+
+    rules = [row < 0, row > (len(image) - 1), col < 0, col > (len(image[0]) - 1)]
+    if any(rules):
+        return True
+    return False
+
+
+def construct_pixel_binary(row, col, image, iteration):
+    """
+    Takes a row and column integer, a list of strings, and an iteration integer. For the given row and column
+    indexes, finds the eight surrounding locations. If any location is not on the image, assumes a value based on the
+    iteration number. If a location is on the image, checks the value; adds a '1' to the pixel binary string if the
+    value is a '#' and adds a '0' otherwise. Returns the pixel binary string.
+    """
     pixel_binary = ''
     grid = [
         [row - 1, col - 1], [row - 1, col], [row - 1, col + 1],
@@ -14,47 +35,31 @@ def construct_pixel_binary(row, col, image):
         [row + 1, col - 1], [row + 1, col], [row + 1, col + 1]
     ]
     for location in grid:
-        if image[location[0]][location[1]] == '#':
+        if is_not_on_image(location[0], location[1], image):
+            if iteration % 2 == 0:
+                pixel_binary += '0'
+            else:
+                pixel_binary += '1'
+        elif image[location[0]][location[1]] == '#':
             pixel_binary += '1'
         else:
             pixel_binary += '0'
     return pixel_binary
 
 
-def count_top_bottom_dark_lines(image):
-    blank_top_lines = [i for i in range(5) if image[i].count('#') == 0]
-    blank_bottom_lines = [i for i in range(len(image) - 1, len(image) - 6, -1) if image[i].count('#') == 0]
-    return len(blank_top_lines), len(blank_bottom_lines)
-
-
-# TODO: this is wrong, thinking in limited scope. this function goes away, as does the one above
-def count_start_end_dark_pixels(row):
-    pixel_count = [[row[:5], 0], [row[:-6:-1], 0]]
-    for i in range(2):
-        for string in pixel_count[i][0]:
-            for char in string:
-                if char == '.':
-                    pixel_count[i][1] += 1
-                else:
-                    break
-    return pixel_count[0][1], pixel_count[1][1]
-
-
-def convert_image(image_algorithm, image):
-    top_line_count, bottom_line_count = count_top_bottom_dark_lines(image)
-    # TODO: this goes away, just iterate over every pixel in the expanded image
-    converted_image = image[:(top_line_count - 1)]
-    for row in range(top_line_count - 1, len(image) - bottom_line_count + 1):
-        new_row = '.'
-        # TODO: col range should be first and last lit pixel index
-        leading_dark_pixels, trailing_dark_pixels = count_start_end_dark_pixels(image[row])
-        for col in range(leading_dark_pixels, len(image[1]) - trailing_dark_pixels - 1):
-            pixel_binary = construct_pixel_binary(row, col, image)
+def convert_image(image_algorithm, image, iteration):
+    """
+    Takes an image algorithm string, a list of strings, and an iteration integer. For each index position in each
+    string (each column of each row in the image), uses the pixel binary to determine which character ('.' or '#')
+    should go in that position in the new string for that row. Adds completed strings to the list of converted
+    strings, and returns that list.
+    """
+    converted_image = []
+    for row in range(len(image)):
+        new_row = ''
+        for col in range(len(image[0])):
+            pixel_binary = construct_pixel_binary(row, col, image, iteration)
             algorithm_index = int(pixel_binary, 2)
             new_row += image_algorithm[algorithm_index]
-        new_row += '.'
         converted_image.append(new_row)
-    row_count = len(converted_image)
-    for i in range(len(image) - 1, row_count - 1, -1):
-        converted_image.append(image[i])
     return converted_image

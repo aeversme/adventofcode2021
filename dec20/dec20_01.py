@@ -2,7 +2,7 @@ from input_handler import convert_input
 from map_handler import expand_trenchmap
 from pixel_handler import count_lit_pixels, convert_image
 
-with open('test-trenchmap.txt') as t:
+with open('trenchmap.txt') as t:
     trenchmap_raw = t.readlines()
 
 
@@ -16,17 +16,18 @@ def map_trench_floor(data):
         print(line)
 
     iteration_count = 0
-    new_trenchmap = convert_image(image_algorithm, expanded_trenchmap)
+    new_trenchmap = convert_image(image_algorithm, expanded_trenchmap, iteration_count)
     iteration_count += 1
     print("\nEnhancing image...\n")
     for line in new_trenchmap:
         print(line)
 
-    new_trenchmap = convert_image(image_algorithm, new_trenchmap)
-    iteration_count += 1
-    print("\nEnhancing image...\n")
-    for line in new_trenchmap:
-        print(line)
+    while iteration_count < 50:
+        new_trenchmap = convert_image(image_algorithm, new_trenchmap, iteration_count)
+        iteration_count += 1
+        print("\nEnhancing image...\n")
+        for line in new_trenchmap:
+            print(line)
 
     lit_pixels = count_lit_pixels(new_trenchmap)
     return lit_pixels, iteration_count
