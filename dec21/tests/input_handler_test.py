@@ -3,14 +3,11 @@ from ..input_handler import convert_input
 
 def setup():
     with open('test-dirac.txt') as d:
-        start_raw = d.readlines()
-    return start_raw
+        player_list = d.readlines()
+    return player_list
 
 
 def test_convert_input():
-    start = convert_input(setup())
+    player_list = convert_input(setup())
 
-    assert start == {
-        'Player 1': 4,
-        'Player 2': 8
-    }
+    assert player_list == [['Player 1', 4], ['Player 2', 8]]
