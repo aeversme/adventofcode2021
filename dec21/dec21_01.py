@@ -47,4 +47,4 @@ def dirac_game(data):
 
 
 score, count = dirac_game(start_raw)
-print(f"Losing score time roll count: {score * count}")
+print(f"Losing score times roll count: {score * count}")
