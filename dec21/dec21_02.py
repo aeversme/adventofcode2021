@@ -5,47 +5,37 @@ with open('test-dirac.txt') as d:
     start_raw = d.readlines()
 
 
-def move_and_score(player, roll):
-    player.space = (player.space + roll) % 10
+def game_turn(player_num, players, score_p1, score_p2, space_p1, space_p2, level):
+    stack_level = level
+    player_index = player_num
+    player = players[player_index]
+    scores = [score_p1, score_p2]
+    spaces = [space_p1, space_p2]
+    print(" . " * stack_level + f"Turn: {player_index}; 0 has {scores[0]} points on {spaces[0]}; 1 has {scores[1]} "
+                                f"points on {spaces[1]}")
+    for roll in range(1, 4):
+        print(" . " * stack_level + f"{player_index} rolls {roll}...")
+        spaces[player_index] += roll
+        if spaces[player_index] > 10:
+            spaces[player_index] = spaces[player_index] % 10
+        score = spaces[player_index]
+        scores[player_index] += score
+        print(" . " * stack_level + f"{player_index} moves to {spaces[player_index]}; new score: "
+                                    f"{scores[player_index]}")
 
-    if player.space == 0:
-        score = 10
-    else:
-        score = player.space
-
-    player.score += score
-
-    return score
-
-
-def is_game_over(players):
-    game_over = False
-    for i in range(2):
-        if players[i].score >= 21:
-            print(f"+++ {players[i].name} wins in this universe.")
-            players[i].victories += 1
-            game_over = True
-    return game_over
-
-
-# TODO: need to have scores roll back as recursion moves back down the stack
-def game_turn(player, players):
-    print(f"New turn, current player: {player.name}")
-    print(f"    {players[0]}")
-    print(f"    {players[1]}")
-    for num in range(1, 4):
-        print(f"Roll: {num}")
-        score = move_and_score(player, num)
-        print(f"Result: {player}")
-        if is_game_over(players):
-            return
+        if max(scores) < 21:
+            player_index = (player_index + 1) % 2
+            stack_level += 1
+            game_turn(player_index, players, scores[0], scores[1], spaces[0], spaces[1], stack_level)
         else:
-            if player == players[0]:
-                next_player = players[1]
-            else:
-                next_player = players[0]
-        game_turn(next_player, players)
-        player.score -= score
+            print(" . " * stack_level + f"*** Winner index {player_index} with {scores[player_index]} on "
+                                        f"{spaces[player_index]}")
+            player.victories += 1
+            scores[player_index] -= score
+            spaces[player_index] -= roll
+            if spaces[player_index] < 0:
+                spaces[player_index] = 10 - spaces[player_index]
+    stack_level -= 1
     return
 
 
@@ -53,7 +43,7 @@ def dirac_game(data):
     player_list = convert_input(data)
     players = [Player(player[0], player[1]) for player in player_list]
 
-    game_turn(players[0], players)
+    game_turn(0, players, 0, 0, 4, 8, 0)
 
     print(f"{players[0].name} has victories in {players[0].victories} universes.")
     print(f"{players[1].name} has victories in {players[1].victories} universes.")
