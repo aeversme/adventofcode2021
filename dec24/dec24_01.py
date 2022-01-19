@@ -4,15 +4,16 @@ from alu_handler import process_operation
 with open('monad.txt') as m:
     m_raw = m.readlines()
 monad = convert_input(m_raw)
+print(monad)
 
 
 def determine_variables(line, var_dict):
     variables = []
     for i in range(1, 3):
-        if line[i].isalpha():
+        if isinstance(line[i], str):
             variables.append(var_dict[line[i]])
         else:
-            variables.append(int(line[i]))
+            variables.append(line[i])
 
     return tuple(variables)
 
@@ -33,11 +34,11 @@ def validate_number(operations, model_number):
             number_index += 1
         else:
             var1, var2 = determine_variables(line, var_dict)
-            # print(f"var1: {var1}, var2: {var2}")
+            # print(f"var1: {var1} {type(var1)}, var2: {var2} {type(var2)}")
             var_dict[line[1]] = process_operation(line[0], var1, var2)
         # print(var_dict)
 
-    return var_dict['z'], model_number
+    return var_dict['z']
 
 
 def get_new_test_number(number):
@@ -50,15 +51,21 @@ def get_new_test_number(number):
 
 
 def test_model_numbers():
-    test_number = '99999999999999'
+    test_number = '55555555555555'
     z = 1
 
+    # z = validate_number(monad, test_number)
+
     while z != 0:
-        z, number = validate_number(monad, test_number)
+        z = validate_number(monad, test_number)
         print(f"{test_number} is invalid.")
         test_number = get_new_test_number(test_number)
 
     print(f"{test_number} is the largest acceptable model number.")
 
+    return z
+
 
 test_model_numbers()
+# test_result = test_model_numbers()
+# print(test_result)
